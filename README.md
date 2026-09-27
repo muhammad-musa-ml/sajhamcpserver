@@ -49,6 +49,24 @@ python run_server.py
 
 Server starts at **http://localhost:3002**. Login: `admin` / `admin123`.
 
+### MCP browser origins
+
+MCP HTTP requests with an `Origin` header are accepted only from
+`http://localhost:<server.port>`, `http://127.0.0.1:<server.port>`, and
+`http://[::1]:<server.port>` by default. For a public deployment, set an explicit
+comma-separated list of browser origins, for example:
+
+```bash
+SAJHA_MCP_ALLOWED_ORIGINS=https://mcp.example.org,https://admin.example.org
+```
+
+Clients that omit `Origin` continue to work. Configure
+`SAJHA_CORS_ORIGINS` separately for browser clients on a public hostname.
+CORS headers control whether browser code can read a response; they do not
+stop the request from reaching `/mcp`. See the [route tests](tests/test_mcp_origin.py),
+[decision matrix](docs/mcp_origin_results.csv), and [graph](docs/mcp_origin_results.svg)
+for the six untrusted Origins compared with upstream.
+
 **Command-line options:**
 
 ```bash

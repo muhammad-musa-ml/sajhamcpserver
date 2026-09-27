@@ -107,6 +107,10 @@ async def mcp_message(request: Request, db: Session = Depends(get_db)):
     New clients should POST to /mcp directly.
     """
     from sajha.app import mcp_handler
+    from sajha.core.mcp_2025_11_25 import validate_origin
+
+    if not validate_origin(request.headers.get('origin')):
+        return JSONResponse({'error': 'Forbidden: invalid Origin'}, status_code=403)
 
     session_id = request.query_params.get('session')
     auth = AuthManager.authenticate_request(request, db)

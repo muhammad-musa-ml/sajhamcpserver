@@ -36,6 +36,10 @@ router = APIRouter(tags=['api'])
 async def mcp_endpoint(request: Request, db: Session = Depends(get_db)):
     """MCP JSON-RPC 2.0 endpoint (same as v2)."""
     from sajha.app import mcp_handler
+    from sajha.core.mcp_2025_11_25 import validate_origin
+
+    if not validate_origin(request.headers.get('origin')):
+        return JSONResponse({'error': 'Forbidden: invalid Origin'}, status_code=403)
 
     auth = AuthManager.authenticate_request(request, db)
     session_data = auth.to_legacy_session() if auth.authenticated else None

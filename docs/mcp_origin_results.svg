@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="230" viewBox="0 0 680 230">
+<rect width="680" height="230" fill="#f8fafc"/>
+<text x="30" y="32" font-family="Arial" font-size="19" font-weight="bold" fill="#0f172a">Untrusted MCP Origins rejected</text>
+<text x="30" y="55" font-family="Arial" font-size="12" fill="#475569">Six untrusted inputs; higher rejection count is better</text>
+<text x="30" y="99" font-family="Arial" font-size="14" fill="#334155">Upstream</text>
+<rect x="150" y="77" width="420" height="30" rx="5" fill="#e2e8f0"/>
+<text x="585" y="99" font-family="Arial" font-size="16" font-weight="bold" fill="#b91c1c">0/6</text>
+<text x="30" y="153" font-family="Arial" font-size="14" fill="#334155">Fixed</text>
+<rect x="150" y="131" width="420" height="30" rx="5" fill="#e2e8f0"/>
+<rect x="150" y="131" width="420" height="30" rx="5" fill="#047857"/>
+<text x="585" y="153" font-family="Arial" font-size="16" font-weight="bold" fill="#047857">6/6</text>
+<text x="30" y="205" font-family="Arial" font-size="11" fill="#64748b">Validator decisions from pinned upstream commit and current code; HTTP route tests run separately.</text>
+</svg>

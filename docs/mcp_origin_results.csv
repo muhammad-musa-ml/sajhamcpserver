@@ -1,0 +1,10 @@
+case,origin,untrusted,upstream_allowed,fixed_allowed
+no Origin header,(absent),False,True,True
+trusted localhost,http://localhost:3002,False,True,True
+trusted loopback,http://127.0.0.1:3002,False,True,True
+external website,https://attacker.example,True,True,False
+host suffix trick,http://localhost.evil.example:3002,True,True,False
+opaque null Origin,null,True,True,False
+wildcard Origin,*,True,True,False
+wildcard bind address,http://0.0.0.0:3002,True,True,False
+origin with path,https://attacker.example/path,True,True,False

@@ -9,6 +9,7 @@ Implements the new primitives from MCP spec 2025-11-25:
   - Sampling with tools: server-initiated LLM calls with tool use (SEP-1577)
 """
 import logging
+import os
 import time
 import uuid
 from dataclasses import dataclass, field
@@ -374,13 +375,40 @@ def validate_origin(request_origin: Optional[str], allowed_origins: List[str] = 
     Validate Origin header per MCP 2025-11-25 Streamable HTTP transport.
     Servers MUST respond with 403 for invalid Origin headers.
     """
-    if not request_origin:
-        return True  # No origin = same-origin or non-browser
-    if not allowed_origins:
-        return True  # No restrictions configured
-    if '*' in allowed_origins:
-        return True
-    return request_origin in allowed_origins
+    if request_origin is None:
+        return True  # Non-browser clients commonly omit Origin.
+    if allowed_origins is None:
+        # The CORS setting controls browser response visibility, not access to
+        # MCP. An explicit, narrow list is needed to stop DNS rebinding.
+        configured = os.environ.get('SAJHA_MCP_ALLOWED_ORIGINS')
+        if configured is None:
+            from sajha.core.config import get_settings
+            port = get_settings().server_port
+            allowed_origins = [
+                f'http://localhost:{port}',
+                f'http://127.0.0.1:{port}',
+                f'http://[::1]:{port}',
+            ]
+        else:
+            allowed_origins = [origin.strip() for origin in configured.split(',')]
+
+    # An Origin is a serialized scheme/host/port, never a wildcard, path, or
+    # opaque "null" value. Exact comparison prevents suffix/domain tricks.
+    from urllib.parse import urlsplit
+    try:
+        parsed = urlsplit(request_origin)
+        valid = (
+            parsed.scheme in ('http', 'https')
+            and bool(parsed.hostname)
+            and parsed.netloc == request_origin.split('://', 1)[-1]
+            and parsed.path == parsed.query == parsed.fragment == ''
+            and parsed.username is None
+            and parsed.password is None
+        )
+        _ = parsed.port  # Reject malformed ports.
+    except (ValueError, AttributeError):
+        return False
+    return valid and request_origin in allowed_origins
 
 
 # ═══════════════════════════════════════════════════
