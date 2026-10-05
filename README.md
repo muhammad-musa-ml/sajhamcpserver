@@ -1,3 +1,17 @@
+## Changes made by me
+
+I forked this because I liked the work and wanted to contribute to it.
+This is my change:
+
+**Validate trusted origins on MCP HTTP routes** ([`5998bdd`](https://github.com/muhammad-musa-ml/sajhamcpserver/commit/5998bdde3a771b8fb5b4b82317d4f955141c8b0e))
+
+- Changed: `README.md`, `sajha/core/mcp_2025_11_25.py`, `sajha/routes/api_routes.py`, `sajha/routes/mcp_routes.py`
+- Added: `docs/mcp_origin_benchmark.py`, `docs/mcp_origin_results.csv`, `docs/mcp_origin_results.svg`, `tests/test_mcp_origin.py`
+
+Everything below this line is the upstream README, unchanged.
+
+---
+
 # SAJHA MCP Server
 
 **Version 5.3.0** · FastAPI · Python 3.9+ · **MCP Protocol 2025-11-25** (latest)
